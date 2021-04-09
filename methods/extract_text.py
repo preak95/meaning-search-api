@@ -1,5 +1,6 @@
 import json
 import sys
+import re
 import pdfplumber
 from logger import get_logger
 """
@@ -22,8 +23,11 @@ def extract_text(file_location):
         word_list = []
 
         for i in range(len(pdf.pages)):
-            text = pdf.pages[i].extract_text().split(" ")
-            word_list += text
+            text_list = pdf.pages[i].extract_text()
+            text_list = re.compile('\w+').findall(text_list)
+            #.split(" ")
+
+            word_list += text_list
 
         return word_list
     except OSError as e:
